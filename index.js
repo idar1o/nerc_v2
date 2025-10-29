@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Водоканал", img: "./images/vodokonal.png", code: "water" },
     { name: "Теплосеть", img: "./images/teploset.png", code: "heating" },
     { name: "Тазалык", img: "./images/tazalyk.png", code: "sewerage" },
+    { name: "Электричество", img: "./images/electricity.png", code: "electricity" },
+    { name: "Газпром", img: "./images/gazprom.png", code: "gas" },
   ];
   const API_URL = "https://ners.billing.kg/ws/public/api/v1/clients/temp/estate";
   const username = "admin-fr";
@@ -96,6 +98,15 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add("selected");
       userSelection.providerCode = card.dataset.providerCode;
       selectedSection.style.display = "flex";
+      // автоскролл к полю ввода
+
+      setTimeout(() => {
+        const formInput = document.getElementById("form-input");
+        if (formInput) {
+          formInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          formInput.focus();
+        }
+      }, 200);
     });
   });
 
@@ -521,11 +532,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!document.getElementById("form-input")) {
       const inputEl = document.createElement("input");
-      inputEl.type = "text";
+      inputEl.type = "tel"; // мобильная цифровая клавиатура
+      inputEl.inputMode = "numeric"; // для всех браузеров
+      inputEl.pattern = "[0-9]*"; // разрешаем только цифры
       inputEl.id = "form-input";
       inputEl.className = "form-input";
       inputEl.placeholder = "Лицевой счёт";
       inputEl.required = true;
+
       const staticBlock = form.querySelector(".form-input-static");
       if (staticBlock) staticBlock.replaceWith(inputEl);
       input = document.getElementById("form-input");
